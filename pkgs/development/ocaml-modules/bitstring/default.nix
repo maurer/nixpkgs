@@ -1,7 +1,7 @@
 {stdenv, fetchurl, buildOcaml, time}:
 
 buildOcaml rec {
-  name = "bitstring-${version}";
+  name = "bitstring";
   version = "2.0.4"; 
   src = fetchurl {
     url = "http://bitstring.googlecode.com/files/ocaml-bitstring-${version}.tar.gz";
