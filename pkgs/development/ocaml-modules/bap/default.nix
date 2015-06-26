@@ -38,7 +38,7 @@ buildOcaml rec {
   ln -s $sigs $out/share/bap/sigs.zip
   '';
 
-  configureFlags = "--with-llvm-config llvm-config";
+  configureFlags = "--with-llvm-config ${llvm_34}/bin/llvm-config";
 
   meta = with stdenv.lib; {
     description = "Platform for binary analysis. It is written in OCaml, but can be used from other languages.";
