@@ -5857,6 +5857,8 @@ let
 
   babl = callPackage ../development/libraries/babl { };
 
+  bap = ocamlPackages.bap;
+
   beecrypt = callPackage ../development/libraries/beecrypt { };
 
   belle-sip = callPackage ../development/libraries/belle-sip { };
