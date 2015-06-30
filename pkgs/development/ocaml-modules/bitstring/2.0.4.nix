@@ -16,6 +16,8 @@ buildOcaml rec {
   createFindlibDestdir = true;
   hasSharedObjects = true;
 
+  buildPhase = "make srcdir=.";
+
   meta = with stdenv.lib; {
     description = "This library adds Erlang-style bitstrings and matching over bitstrings as a syntax extension and library for OCaml.";
     homepage = http://code.google.com/p/bitstring/;
