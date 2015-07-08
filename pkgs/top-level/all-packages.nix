@@ -4551,6 +4551,8 @@ let
 
     re = callPackage ../development/ocaml-modules/re { };
 
+    res = callPackage ../development/ocaml-modules/res { };
+
     safepass = callPackage ../development/ocaml-modules/safepass { };
 
     sqlite3EZ = callPackage ../development/ocaml-modules/sqlite3EZ { };
