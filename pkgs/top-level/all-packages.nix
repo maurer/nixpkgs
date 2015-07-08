@@ -4495,6 +4495,8 @@ let
 
     tyxml = callPackage ../development/ocaml-modules/tyxml { };
 
+    uint = callPackage ../development/ocaml-modules/uint { };
+
     ulex = callPackage ../development/ocaml-modules/ulex { };
 
     ulex08 = callPackage ../development/ocaml-modules/ulex/0.8 {
