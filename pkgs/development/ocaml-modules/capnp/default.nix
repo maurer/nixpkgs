@@ -1,4 +1,4 @@
-{stdenv, buildOcaml, camlp4, core, uint, ocplib-endian, res, omake, findlib,
+{stdenv, buildOcaml, camlp4, core_kernel, uint, ocplib-endian, res, omake, findlib,
  pa_ounit, pa_test,
  fetchFromGitHub}:
  
@@ -14,7 +14,7 @@ buildOcaml rec {
 
   createFindlibDestdir = true;
 
-  buildInputs = [ camlp4 core uint ocplib-endian res omake pa_ounit pa_test ];
+  buildInputs = [ camlp4 core_kernel uint ocplib-endian res omake pa_ounit pa_test ];
 
   envVars = "OCAML_TOPLEVEL_PATH=${findlib}/lib/ocaml/$ocaml_version/site-lib PREFIX=$out";
 
