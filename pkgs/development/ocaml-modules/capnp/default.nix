@@ -9,7 +9,7 @@ buildOcaml rec {
     owner  = "maurer";
     repo   = "capnp-ocaml";
     rev    = "core_kernel";
-    sha256 = "0w6wcayvn6cn57cy8hy4bdm9dhpi2nrvpgqcm8zy6lhq7yj8fsd0";
+    sha256 = "18a1lf9jfka83i6cii6zz6nj6df0fd4pd5sy1qdyl47dkr6x0jnn";
   };
 
   createFindlibDestdir = true;
