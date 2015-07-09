@@ -4286,6 +4286,8 @@ let
 
     ocaml_cairo2 = callPackage ../development/ocaml-modules/ocaml-cairo2 { };
 
+    capnp = callPackage ../development/ocaml-modules/capnp { omake = omake_rc1; };
+
     cil = callPackage ../development/ocaml-modules/cil { };
 
     cmdliner = callPackage ../development/ocaml-modules/cmdliner { };
