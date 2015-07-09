@@ -46,7 +46,7 @@ buildOcaml rec {
   preConfigurePhase = ''
     export NIX_LDFLAGS="$NIX_LDFLAGS -L${libssh2}/lib -L${curl}/lib -L${openssl}/lib"
   '';
-  configureFlags = "--with-cxxlibs=-lc++ --with-llvm-config ${llvm_34}/bin/llvm-config";
+  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_34}/bin/llvm-config";
 
   meta = with stdenv.lib; {
     description = "Platform for binary analysis. It is written in OCaml, but can be used from other languages.";
