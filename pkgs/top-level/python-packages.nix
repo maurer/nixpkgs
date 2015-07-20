@@ -82,6 +82,8 @@ let
 
   # packages defined elsewhere
 
+  bap = callPackage ../development/python-modules/bap { bap = pkgs.ocamlPackages_4_02_1.bap; };
+
   blivet = callPackage ../development/python-modules/blivet { };
 
   dbus = callPackage ../development/python-modules/dbus {
