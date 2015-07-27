@@ -14,7 +14,7 @@ self: super: {
   # Break infinite recursions.
   Dust-crypto = dontCheck super.Dust-crypto;
   hasql-postgres = dontCheck super.hasql-postgres;
-  hspec-expectations = dontCheck super.hspec-expectations;
+  hspec = super.hspec.override { stringbuilder = dontCheck super.stringbuilder; };
   HTTP = dontCheck super.HTTP;
   mwc-random = dontCheck super.mwc-random;
   nanospec = dontCheck super.nanospec;
@@ -88,9 +88,6 @@ self: super: {
   yices-easy = dontDistribute super.yices-easy;
   yices-painless = dontDistribute super.yices-painless;
 
-  # The test suite refers to its own library with an invalid version constraint.
-  presburger = dontCheck super.presburger;
-
   # Won't find it's header files without help.
   sfml-audio = appendConfigureFlag super.sfml-audio "--extra-include-dirs=${pkgs.openal}/include/AL";
 
@@ -112,9 +109,6 @@ self: super: {
   # https://github.com/haskell/time/issues/23
   time_1_5_0_1 = dontCheck super.time_1_5_0_1;
 
-  # Cannot compile its own test suite: https://github.com/haskell/network-uri/issues/10.
-  network-uri = dontCheck super.network-uri;
-
   # Help libconfig find it's C language counterpart.
   libconfig = (dontCheck super.libconfig).override { config = pkgs.libconfig; };
 
@@ -135,6 +129,7 @@ self: super: {
   });
 
   # The Haddock phase fails for one reason or another.
+  acme-one = dontHaddock super.acme-one;
   attoparsec-conduit = dontHaddock super.attoparsec-conduit;
   base-noprelude = dontHaddock super.base-noprelude;
   blaze-builder-conduit = dontHaddock super.blaze-builder-conduit;
@@ -191,24 +186,42 @@ self: super: {
 
   # cabal2nix likes to generate dependencies on hinotify when hfsevents is really required
   # on darwin: https://github.com/NixOS/cabal2nix/issues/146
-  hinotify = if pkgs.stdenv.isDarwin then super.hfsevents else super.hinotify;
+  hinotify = if pkgs.stdenv.isDarwin then self.hfsevents else super.hinotify;
+
+  # hfsevents needs CoreServices in scope
+  hfsevents = if pkgs.stdenv.isDarwin
+    then addBuildTool super.hfsevents pkgs.darwin.apple_sdk.frameworks.CoreServices
+    else super.hfsevents;
 
   # FSEvents API is very buggy and tests are unreliable. See
   # http://openradar.appspot.com/10207999 and similar issues
   fsnotify = if pkgs.stdenv.isDarwin then dontCheck super.fsnotify else super.fsnotify;
 
+  # the system-fileio tests use canonicalizePath, which fails in the sandbox
+  system-fileio = if pkgs.stdenv.isDarwin then dontCheck super.system-fileio else super.system-fileio;
+
   # Prevents needing to add security_tool as a build tool to all of x509-system's
   # dependencies.
-  # TODO: use pkgs.darwin.security_tool once we can build it
-  x509-system = let security_tool = "/usr";
-  in overrideCabal super.x509-system (drv: {
-    patchPhase = (drv.patchPhase or "") + pkgs.stdenv.lib.optionalString pkgs.stdenv.isDarwin ''
-      substituteInPlace System/X509/MacOS.hs --replace security ${security_tool}/bin/security
-    '';
-  });
+  x509-system = if pkgs.stdenv.isDarwin && !pkgs.stdenv.cc.nativeLibc
+    then let inherit (pkgs.darwin) security_tool;
+      in pkgs.lib.overrideDerivation (addBuildDepend super.x509-system security_tool) (drv: {
+        patchPhase = (drv.patchPhase or "") + ''
+          substituteInPlace System/X509/MacOS.hs --replace security ${security_tool}/bin/security
+        '';
+      })
+    else super.x509-system;
+
+  double-conversion = if !pkgs.stdenv.isDarwin
+    then super.double-conversion
+    else overrideCabal super.double-conversion (drv:
+      {
+        patchPhase = ''
+          substituteInPlace double-conversion.cabal --replace stdc++ c++
+        '';
+      });
 
   # Does not compile: "fatal error: ieee-flpt.h: No such file or directory"
-  base_4_8_0_0 = markBroken super.base_4_8_0_0;
+  base_4_8_1_0 = markBroken super.base_4_8_1_0;
 
   # Obsolete: https://github.com/massysett/prednote/issues/1.
   prednote-test = markBrokenVersion "0.26.0.4" super.prednote-test;
@@ -221,9 +234,6 @@ self: super: {
 
   # https://github.com/haskell/bytestring/issues/41
   bytestring_0_10_6_0 = dontCheck super.bytestring_0_10_6_0;
-
-  # https://github.com/zmthy/http-media/issues/6
-  http-media = dontCheck super.http-media;
 
   # tests don't compile for some odd reason
   jwt = dontCheck super.jwt;
@@ -313,6 +323,7 @@ self: super: {
   bitx-bitcoin = dontCheck super.bitx-bitcoin;          # http://hydra.cryp.to/build/926187/log/raw
   concurrent-dns-cache = dontCheck super.concurrent-dns-cache;
   dbus = dontCheck super.dbus;                          # http://hydra.cryp.to/build/498404/log/raw
+  digitalocean-kzs = dontCheck super.digitalocean-kzs;  # https://github.com/KazumaSATO/digitalocean-kzs/issues/1
   hadoop-rpc = dontCheck super.hadoop-rpc;              # http://hydra.cryp.to/build/527461/nixlog/2/raw
   hasql = dontCheck super.hasql;                        # http://hydra.cryp.to/build/502489/nixlog/4/raw
   hjsonschema = overrideCabal super.hjsonschema (drv: { testTarget = "local"; });
@@ -327,14 +338,15 @@ self: super: {
   raven-haskell = dontCheck super.raven-haskell;        # http://hydra.cryp.to/build/502053/log/raw
   riak = dontCheck super.riak;                          # http://hydra.cryp.to/build/498763/log/raw
   scotty-binding-play = dontCheck super.scotty-binding-play;
+  serversession-backend-redis = dontCheck super.serversession-backend-redis;
   slack-api = dontCheck super.slack-api;                # https://github.com/mpickering/slack-api/issues/5
+  socket = dontCheck super.socket;
   stackage = dontCheck super.stackage;                  # http://hydra.cryp.to/build/501867/nixlog/1/raw
   textocat-api = dontCheck super.textocat-api;          # http://hydra.cryp.to/build/887011/log/raw
   warp = dontCheck super.warp;                          # http://hydra.cryp.to/build/501073/nixlog/5/raw
   wreq = dontCheck super.wreq;                          # http://hydra.cryp.to/build/501895/nixlog/1/raw
   wreq-sb = dontCheck super.wreq-sb;                    # http://hydra.cryp.to/build/783948/log/raw
   wuss = dontCheck super.wuss;                          # http://hydra.cryp.to/build/875964/nixlog/2/raw
-  serversession-backend-redis = dontCheck super.serversession-backend-redis;
 
   # https://github.com/NICTA/digit/issues/3
   digit = dontCheck super.digit;
@@ -607,15 +619,8 @@ self: super: {
   # https://github.com/jwiegley/simple-conduit/issues/2
   simple-conduit = markBroken super.simple-conduit;
 
-  # https://github.com/srijs/hwsl2/issues/1
-  hwsl2 = markBroken super.hwsl2;
-
   # https://code.google.com/p/linux-music-player/issues/detail?id=1
   mp = markBroken super.mp;
-
-  # Depends on broken lmdb package.
-  vcache = markBroken super.vcache;
-  vcache-trie = markBroken super.vcache-trie;
 
   # https://github.com/afcowie/http-streams/issues/80
   http-streams = dontCheck super.http-streams;
@@ -777,9 +782,6 @@ self: super: {
   # Patch to consider NIX_GHC just like xmonad does
   dyre = appendPatch super.dyre ./dyre-nix.patch;
 
-  # https://github.com/gwern/mueval/issues/9
-  mueval = appendPatch (appendPatch super.mueval ./mueval-fix.patch) ./mueval-nix.patch;
-
   # Test suite won't compile against tasty-hunit 0.9.x.
   zlib = dontCheck super.zlib;
 
@@ -803,6 +805,7 @@ self: super: {
   # https://github.com/goldfirere/singletons/issues/118
   clash-lib = dontDistribute super.clash-lib;
   clash-verilog = dontDistribute super.clash-verilog;
+  Frames = dontDistribute super.Frames;
   hgeometry = dontDistribute super.hgeometry;
   hipe = dontDistribute super.hipe;
   singleton-nats = dontDistribute super.singleton-nats;
@@ -822,6 +825,7 @@ self: super: {
 
   # Won't compile with recent versions of QuickCheck.
   testpack = markBroken super.testpack;
+  inilist = dontCheck super.inilist;
   MissingH = dontCheck super.MissingH;
 
   # Obsolete for GHC versions after GHC 6.10.x.
@@ -866,6 +870,7 @@ self: super: {
   # This package can't be built on non-Windows systems.
   Win32 = overrideCabal super.Win32 (drv: { broken = !pkgs.stdenv.isCygwin; });
   inline-c-win32 = dontDistribute super.inline-c-win32;
+  Southpaw = dontDistribute super.Southpaw;
 
   # Doesn't work with recent versions of mtl.
   cron-compat = markBroken super.cron-compat;
@@ -873,12 +878,22 @@ self: super: {
   # https://github.com/yesodweb/serversession/issues/1
   serversession = dontCheck super.serversession;
 
-  # https://github.com/singpolyma/wai-session/issues/8
-  wai-session = markBroken super.wai-session;
-  serversession-frontend-wai = dontDistribute super.serversession-frontend-wai;
+  yesod-bin = if pkgs.stdenv.isDarwin
+    then addBuildDepend super.yesod-bin pkgs.darwin.apple_sdk.frameworks.Cocoa
+    else super.yesod-bin;
 
   # https://github.com/commercialhaskell/stack/issues/408
   # https://github.com/commercialhaskell/stack/issues/409
   stack = overrideCabal super.stack (drv: { preCheck = "export HOME=$TMPDIR"; doCheck = false; });
+
+  # Missing dependency on some hid-usb library.
+  hid = markBroken super.hid;
+  msi-kb-backlit = dontDistribute super.msi-kb-backlit;
+
+  # Hydra no longer allows building texlive packages.
+  lhs2tex = dontDistribute super.lhs2tex;
+
+  # https://ghc.haskell.org/trac/ghc/ticket/9825
+  vimus = overrideCabal super.vimus (drv: { broken = pkgs.stdenv.isLinux && pkgs.stdenv.isi686; });
 
 }

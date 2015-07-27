@@ -143,7 +143,7 @@ in
         default = 0;
         description = ''
           Nix daemon process priority. This priority propagates to build processes.
-          0 is the default Unix process priority, 20 is the lowest.
+          0 is the default Unix process priority, 19 is the lowest.
         '';
       };
 
@@ -254,7 +254,7 @@ in
 
       requireSignedBinaryCaches = mkOption {
         type = types.bool;
-        default = false;
+        default = true;
         description = ''
           If enabled, Nix will only download binaries from binary
           caches if they are cryptographically signed with any of the

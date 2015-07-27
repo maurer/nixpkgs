@@ -59,6 +59,7 @@ rec {
   hoogle              = Hoogle;
   ipython             = vim-ipython;
   latex-live-preview  = vim-latex-live-preview;
+  multiple-cursors    = vim-multiple-cursors;
   necoGhc             = neco-ghc; # backwards compat, added 2014-10-18
   neocomplete         = neocomplete-vim;
   neosnippet          = neosnippet-vim;
@@ -80,7 +81,19 @@ rec {
   vimshell            = vimshell-vim;
   watchdogs           = vim-watchdogs;
   webapi-vim          = WebAPI;
+  wombat256           = wombat256-vim; # backwards compat, added 2015-7-8
   yankring            = YankRing;
+
+  CSApprox = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "CSApprox-2013-07-26";
+    src = fetchgit {
+      url = "git://github.com/godlygeek/csapprox";
+      rev = "7981dac51d8b6776985aa08cb7b5ee98ea7f2ddd";
+      sha256 = "8ccb47eb79c7ab63109d32158388812bdca340985527af4f2a5489ff8683389f";
+    };
+    dependencies = [];
+
+  };
 
   Gist = buildVimPluginFrom2Nix { # created by nix#NixDerivation
     name = "Gist-2015-06-24";
@@ -439,6 +452,17 @@ rec {
 
   };
 
+  vim-multiple-cursors = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "vim-multiple-cursors-2015-05-29";
+    src = fetchgit {
+      url = "git://github.com/terryma/vim-multiple-cursors";
+      rev = "3199d34f57e1e20d2dd807b31a5a72d7f7d42e96";
+      sha256 = "26b43c921b416cc19482d03435516d42a209ab104bac9979b073d0db61e95186";
+    };
+    dependencies = [];
+
+  };
+
   vim-nerdtree-tabs = buildVimPluginFrom2Nix { # created by nix#NixDerivation
     name = "vim-nerdtree-tabs-2014-09-25";
     src = fetchgit {
@@ -760,6 +784,17 @@ rec {
 
   };
 
+  changeColorScheme-vim = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "changeColorScheme-vim-2010-10-17";
+    src = fetchgit {
+      url = "git://github.com/vim-scripts/changeColorScheme.vim";
+      rev = "b041d49f828629d72f2232531a230d1ec5de2405";
+      sha256 = "094ccc132dc3991a30feb31bbdd777755294957e843517491345a4999e86cb5f";
+    };
+    dependencies = [];
+
+  };
+
   tabmerge = buildVimPluginFrom2Nix { # created by nix#NixDerivation
     name = "tabmerge-2010-10-17";
     src = fetchgit {
@@ -854,6 +889,17 @@ rec {
 
   };
 
+  random-vim = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "random-vim-2010-10-17";
+    src = fetchgit {
+      url = "git://github.com/vim-scripts/random.vim";
+      rev = "b2d85eb24a38074eab37a5acf2a295e1f2ad8989";
+      sha256 = "571f4ed0a2d8c66d1c15029fb812a84b55228d07cd2e4bbbc73a33493013fed3";
+    };
+    dependencies = [];
+
+  };
+
   rust = buildVimPluginFrom2Nix { # created by nix#NixDerivation
     name = "rust-2015-01-29";
     src = fetchgit {
@@ -871,6 +917,17 @@ rec {
       url = "git://github.com/tpope/vim-sensible";
       rev = "d0beb8ab42627bea2c747564ca46ec663e3ba0ba";
       sha256 = "c1893990e7b0b3f409b2ec4f4e1fb7f00f61a5146b94314ad28d86231d3ab6f7";
+    };
+    dependencies = [];
+
+  };
+
+  sleuth = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "sleuth-2015-06-07";
+    src = fetchgit {
+      url = "git://github.com/tpope/vim-sleuth";
+      rev = "a17462708aa40a7fc0afd4effa559087d8a2c908";
+      sha256 = "72f4b7c5e60c942592e624806960736e71b9f109fbbfa3a5a2a37970b90f6025";
     };
     dependencies = [];
 
@@ -1293,18 +1350,15 @@ rec {
 
   };
 
-  wombat256 = buildVimPluginFrom2Nix { # created by nix#NixDerivation
-    name = "wombat256";
-    src = fetchurl {
-      url = "http://www.vim.org/scripts/download_script.php?src_id=13400";
-      name = "wombat256mod.vim";
-      sha256 = "1san0jg9sfm6chhnr1wc5nhczlp11ibca0v7i4gf68h9ick9mysn";
+  wombat256-vim = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "wombat256-vim-2010-10-17";
+    src = fetchgit {
+      url = "git://github.com/vim-scripts/wombat256.vim";
+      rev = "8734ba45dcf5e38c4d2686b35c94f9fcb30427e2";
+      sha256 = "2feb7d57ab0a9f2ea44ccd606e540db64ab3285956398a50ecc562d7b8dbcd05";
     };
-    buildInputs = [ unzip ];
     dependencies = [];
-    meta = {
-       url = "http://www.vim.org/scripts/script.php?script_id=2465";
-    };
+
   };
 
 }

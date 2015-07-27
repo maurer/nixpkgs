@@ -14,6 +14,7 @@ buildFHSUserEnv {
       pkgs.gnome2.zenity
       pkgs.xdg_utils
       pkgs.xlibs.xrandr
+      pkgs.which
     ]
     ++ lib.optional (config.steam.java or false) pkgs.jdk
     ++ lib.optional (config.steam.primus or false) pkgs.primus
@@ -58,8 +59,6 @@ buildFHSUserEnv {
       pkgs.libvorbis
       pkgs.openal
       pkgs.libpulseaudio
-
-      pkgs.flashplayer
 
       pkgs.gst_all_1.gst-plugins-ugly # "Audiosurf 2" needs this
     ];

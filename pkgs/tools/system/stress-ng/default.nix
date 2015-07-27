@@ -1,11 +1,11 @@
 { stdenv, fetchurl, attr }:
 
-let version = "0.04.07"; in
+let version = "0.04.12"; in
 stdenv.mkDerivation rec {
   name = "stress-ng-${version}";
 
   src = fetchurl {
-    sha256 = "0yzh0lkjll4qwhgjlrji9n9qps4nmh10240nsyqkgr4yv3my9fi0";
+    sha256 = "0gc5mai1dzhb7n8wsy2kzx0q85zbsa2ilvc2fpa30ilcwmg28kgm";
     url = "http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${name}.tar.gz";
   };
 
