@@ -1387,6 +1387,8 @@ let
 
   efivar = callPackage ../tools/system/efivar { };
 
+  ekam = callPackage ../development/tools/ekam { };
+
   evemu = callPackage ../tools/system/evemu { };
 
   elasticsearch = callPackage ../servers/search/elasticsearch { };
