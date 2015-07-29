@@ -2058,6 +2058,11 @@ let
     nodePackages = nodePackages_0_10;
   };
 
+  sandstorm = callPackage ../development/web/sandstorm {
+    nodejs = nodejs-0_10;
+    libuv  = libuvVersions.v0_11_29;
+  };
+
   npm2nix = nodePackages_0_10.npm2nix;
 
   ldapvi = callPackage ../tools/misc/ldapvi { };
