@@ -2054,6 +2054,10 @@ let
 
   iojsPackages = callPackage ./node-packages.nix { self = iojsPackages; nodejs = iojs; };
 
+  meteor = callPackage ../development/web/meteor {
+    nodePackages = nodePackages_0_10;
+  };
+
   npm2nix = nodePackages_0_10.npm2nix;
 
   ldapvi = callPackage ../tools/misc/ldapvi { };
