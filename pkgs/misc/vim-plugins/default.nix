@@ -302,8 +302,8 @@ rec {
     name = "ghcmod-2015-03-17";
     src = fetchgit {
       url = "git://github.com/eagletmt/ghcmod-vim";
-      rev = "7e5f6102aa709244f5d4cedec807eac4b901c4cb";
-      sha256 = "47c5f5c4bf73dca653550b460306fa3808d864a685903bdb95ba07a6e1cd2899";
+      rev = "131a974b881b405e67fc2343322fda3e2375bd98";
+      sha256 = "1jnylkk0k73qcrjgcsixs7spr1xbl85n3cji2w9yvi5hzfd7ypkd";  
     };
     dependencies = [];
 
