@@ -31,6 +31,7 @@ stdenv.mkDerivation rec {
   patches = [ patchOcamlBuild ];
 
   prefixKey = "-prefix ";
+  NIX_CFLAGS_COMPILE = "-fPIC";
   configureFlags = optionals useX11 [ "-x11lib" x11lib
                                       "-x11include" x11inc ];
 
