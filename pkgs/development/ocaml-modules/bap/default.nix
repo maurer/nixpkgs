@@ -5,9 +5,9 @@ buildOcaml rec {
   name = "bap";
   version = "8d1a7c";
   src = fetchgit {
-    url = "https://github.com/BinaryAnalysisPlatform/bap.git";    
-    rev = "8d1a7ca938320802c784adfa54ff5d851d5251d3";
-    sha256 = "04n50n22sbslijdcjlv0h1z5fwwxsj08bdw5n9lxrrfm6fakfpdv";
+    url = "https://github.com/maurer/bap.git";    
+    rev = "e730fbed49f159e305450cab20d811e129964397";
+    sha256 = "17vbpbv6l9n4d162pvp312z66l9qrp18205g0d37bdfxisy6iyms";
   };
 
   sigs = fetchurl {
