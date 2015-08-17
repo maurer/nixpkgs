@@ -1501,6 +1501,11 @@ let
 
   libbsd = callPackage ../development/libraries/libbsd { };
 
+  libbap = callPackage ../development/libraries/libbap {
+    inherit (ocamlPackages) findlib camlp4 ocaml_oasis core_kernel faillib
+    pa_ounit pa_test camlzip ocamlgraph bitstring zarith uuidm fileutils;
+  };
+
   libbladeRF = callPackage ../development/libraries/libbladeRF { };
 
   lp_solve = callPackage ../applications/science/math/lp_solve { };
