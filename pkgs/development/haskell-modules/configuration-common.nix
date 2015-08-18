@@ -943,13 +943,7 @@ self: super: {
     preCheck = "export HOME=$TMPDIR";
     testToolDepends = drv.testToolDepends or [] ++ [self.cabal-install];
     doCheck = false;            # https://github.com/kazu-yamamoto/ghc-mod/issues/335
-    executableToolDepends = drv.executableToolDepends or [] ++ [pkgs.emacs];
-    postInstall = ''
-      local lispdir=( "$out/share/"*"-${self.ghc.name}/${drv.pname}-${drv.version}/elisp" )
-      make -C $lispdir
-      mkdir -p $out/share/emacs/site-lisp
-      ln -s "$lispdir/"*.el{,c} $out/share/emacs/site-lisp/
-    '';
+    executableToolDepends = drv.executableToolDepends or [];
   });
 
   # Byte-compile elisp code for Emacs.
