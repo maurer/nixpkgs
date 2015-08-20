@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "maurer";
     repo  = "libbap";
-    rev   = "948882e8ad3901955b68937864a44b5cde212194";
-    sha256 = "06dsjg88f6kcjdgdz4hwb7j1dln4vzyh742k2kq2i82zdz5jhz95";
+    rev   = "e63244e0bb774222a5b6e6c7afe59beff9a87734";
+    sha256 = "1dh357abflc7bxy7slzjk66df4lk2ri95vi8m1zi46dvifar816c";
   };
 
   buildInputs = [ ocaml findlib camlp4 ocaml_oasis core_kernel bap ncurses
