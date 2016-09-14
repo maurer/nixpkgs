@@ -5171,6 +5171,10 @@ in
       lwt = ocaml_lwt;
     };
 
+    cstruct_p4 = callPackage ../development/ocaml-modules/cstruct/1.6.0.nix {
+      lwt = ocaml_lwt;
+    };
+
     csv = callPackage ../development/ocaml-modules/csv { };
 
     custom_printf = callPackage ../development/ocaml-modules/custom_printf { };
