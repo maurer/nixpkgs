@@ -1,11 +1,11 @@
-{stdenv, fetchurl, ocaml, findlib, ocaml_data_notation, type_conv, camlp4,
+{stdenv, fetchurl, ocaml, findlib, ocaml_data_notation, type_conv,
  ocamlmod, ocamlify, ounit, expect}:
 
 stdenv.mkDerivation {
   name = "ocaml-oasis-0.4.7";
 
   src = fetchurl {
-    url = http://forge.ocamlcore.org/frs/download.php/1635/oasis-0.4.6.tar.gz;
+    url = http://forge.ocamlcore.org/frs/download.php/1635/oasis-0.4.7.tar.gz;
     sha256 = "13crvqiy0hhlnm4qfyxq2jjvs11ldxf15c4g9q91k1x3wj04pg2l";
   };
 
@@ -13,7 +13,7 @@ stdenv.mkDerivation {
 
   buildInputs =
     [
-      ocaml findlib type_conv ocamlmod ocamlify ounit camlp4
+      ocaml findlib type_conv ocamlmod ocamlify ounit
     ];
 
   propagatedBuildInputs = [ ocaml_data_notation ];
