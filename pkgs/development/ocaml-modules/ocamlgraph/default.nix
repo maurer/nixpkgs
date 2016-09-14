@@ -2,7 +2,7 @@
 
 let
   ocaml_version = (builtins.parseDrvName ocaml.name).version;
-  version = "1.8.5";
+  version = "1.8.7";
 in
 
 stdenv.mkDerivation {
@@ -10,10 +10,10 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "http://ocamlgraph.lri.fr/download/ocamlgraph-${version}.tar.gz";
-    sha256 = "0bxqxzd5sd7siz57vhzb8bmiz1ddhgdv49gcsmwwfmd16mj4cryi";
+    sha256 = "1845r537swjil2fcj7lgbibc2zybfwqqasrd2s7bncajs83cl1nz";
   };
 
-  buildInputs = [ ocaml findlib ocamlPackages.lablgtk ocamlPackages.camlp4 ];
+  buildInputs = [ ocaml findlib ocamlPackages.lablgtk ];
 
   patches = ./destdir.patch;
 
@@ -25,6 +25,7 @@ stdenv.mkDerivation {
     sed -i 's@$(DESTDIR)$(OCAMLLIB)/ocamlgraph@$(DESTDIR)/lib/ocaml/${ocaml_version}/site-lib/ocamlgraph@' Makefile.in
     sed -i 's@$OCAMLLIB/lablgtk2@${ocamlPackages.lablgtk}/lib/ocaml/${ocaml_version}/site-lib/lablgtk2@' configure Makefile.in
     sed -i 's@+lablgtk2@${ocamlPackages.lablgtk}/lib/ocaml/${ocaml_version}/site-lib/lablgtk2 -I ${ocamlPackages.lablgtk}/lib/ocaml/${ocaml_version}/site-lib/stublibs@' configure Makefile.in editor/Makefile
+    sed -i 's@OCAMLFINDDEST\ :=\ -destdir\ $(DESTDIR)@@' Makefile.in
   '';
 
   createFindlibDestdir = true;
