@@ -5482,7 +5482,12 @@ in
     uucp = callPackage ../development/ocaml-modules/uucp { };
     uunf = callPackage ../development/ocaml-modules/uunf { };
 
-    uri = callPackage ../development/ocaml-modules/uri { };
+    uri_p4 = callPackage ../development/ocaml-modules/uri/1.9.1.nix { };
+
+    uri =
+      if lib.versionOlder "4.02" ocaml_version
+      then callPackage ../development/ocaml-modules/uri { }
+      else uri_p4;
 
     uuseg = callPackage ../development/ocaml-modules/uuseg { };
     uutf = callPackage ../development/ocaml-modules/uutf { };
