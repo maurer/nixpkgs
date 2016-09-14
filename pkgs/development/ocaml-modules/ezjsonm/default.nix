@@ -1,4 +1,4 @@
-{ stdenv, fetchzip, ocaml, findlib, jsonm, hex, sexplib_p4, lwt }:
+{ stdenv, fetchzip, ocaml, findlib, jsonm, hex, sexplib, lwt }:
 
 let version = "0.4.1"; in
 
@@ -11,7 +11,7 @@ stdenv.mkDerivation {
   };
 
   buildInputs = [ ocaml findlib ];
-  propagatedBuildInputs = [ jsonm hex sexplib_p4 lwt ];
+  propagatedBuildInputs = [ jsonm hex sexplib lwt ];
   createFindlibDestdir = true;
 
   configureFlags = "--enable-lwt";
