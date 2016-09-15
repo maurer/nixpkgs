@@ -10,9 +10,9 @@ stdenv.mkDerivation {
 
   buildInputs = [ ocaml findlib ounit ];
 
-  configureFlags = "--enable-tests";
-  doCheck = true;
-  checkTarget = "test";
+  patches = [ ./link.patch ];
+
+  doCheck = false;
 
   createFindlibDestdir = true;
 

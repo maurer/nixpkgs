@@ -2,7 +2,7 @@
 
 let
   ocaml_version = (builtins.parseDrvName ocaml.name).version;
-  version = "1.8.7";
+  version = "1.8.6";
 in
 
 stdenv.mkDerivation {
@@ -10,7 +10,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "http://ocamlgraph.lri.fr/download/ocamlgraph-${version}.tar.gz";
-    sha256 = "1845r537swjil2fcj7lgbibc2zybfwqqasrd2s7bncajs83cl1nz";
+    sha256 = "1vyvy9cazv1grh0xn0j47w8bnhw93jbn29cqv34k1r0px16yyxdx";
   };
 
   buildInputs = [ ocaml findlib ocamlPackages.lablgtk ];

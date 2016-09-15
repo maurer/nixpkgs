@@ -1,4 +1,4 @@
-{ stdenv, fetchzip, buildOcaml, time, autoconf, automake }:
+{ stdenv, fetchzip, buildOcaml, time, autoconf, automake, camlp4 }:
 
 buildOcaml rec {
   name = "bitstring";
@@ -10,7 +10,7 @@ buildOcaml rec {
 
   patches = [ ./camlp4-git.patch ./meta.patch ./srcdir.patch ];
 
-  buildInputs = [time autoconf automake];
+  buildInputs = [time autoconf automake camlp4];
   doCheck = true;
 
   createFindlibDestdir = true;

@@ -16,6 +16,11 @@ stdenv.mkDerivation rec {
 
   createFindlibDestdir = true;
 
+  buildPhase = ''
+    make
+    make -C piqilib piqilib.cma
+  '';
+
   installPhase = ''
     make install;
     make ocaml-install;

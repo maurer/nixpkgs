@@ -32,6 +32,10 @@ stdenv.mkDerivation rec {
 
   createFindlibDestdir = true;
 
+  patchPhase = ''
+    sed -i configure -e s#-quiet##
+  '';
+
   buildInputs = [ ocaml findlib ocaml_oasis ounit which piqi
                   llvm_38
                   makeWrapper ];
@@ -56,10 +60,11 @@ stdenv.mkDerivation rec {
   EOF
   make install
   wrapProgram $out/bin/bapbuild --prefix PATH : ${ lib.makeBinPath [ ocaml findlib ] } --set OCAMLPATH $OCAMLPATH
+  mkdir -p $out/share/bap/
   ln -s $sigs $out/share/bap/sigs.zip
   '';
 
-  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_38}/bin/llvm-config --enable-everything --enable-tests --disable-ida-plugin";
+  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_38}/bin/llvm-config --enable-future --enable-regular --enable-elf --enable-dwarf --enable-frontend --enable-graphlib --enable-llvm --enable-bap-std --enable-tests --enable-byteweight --enable-byteweight-frontend --enable-arm --enable-c --enable-abi --enable-api";
 
   meta = with stdenv.lib; {
     description = "Platform for binary analysis. It is written in OCaml, but can be used from other languages.";
