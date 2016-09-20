@@ -1,11 +1,11 @@
 {stdenv, buildOcaml, fetchurl}:
 
 buildOcaml rec {
-  name = "Frontc";
+  name = "FrontC";
   version = "3.4";
 
   src = fetchurl {
-    url = "http://www.irit.fr/recherches/ARCHI/MARCH/frontc/${name}-${version}.tgz";
+    url = "http://www.irit.fr/recherches/ARCHI/MARCH/frontc/Frontc-${version}.tgz";
     sha256 = "16dz153s92dgbw1rrfwbhscy73did87kfmjwyh3qpvs748h1sc4g";
   };
 
@@ -26,12 +26,10 @@ buildOcaml rec {
     sha256 = "0xf83ixx0mf3mznwpwp2mjflii0njdzikhhfxpnms7vhnnmlfzy5";
   };
 
+  patches = [ opam_patch ];
+  patchFlags = "-p4";
+
   makeFlags = "PREFIX=$(out) OCAML_SITE=$(OCAMLFIND_DESTDIR)";
 
-  postInstall  = ''
-     cp ${meta_file} META
-     ocamlfind install FrontC $OCAMLFIND_DESTDIR/frontc/* META
-     rm -rf $OCAMLFIND_DESTDIR/frontc
-  '';
-
+  postInstall = "cp ${meta_file} $OCAMLFIND_DESTDIR/FrontC/META";
 }
