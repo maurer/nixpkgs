@@ -1,0 +1,91 @@
+From 26652c3e3c25f17037cd0fe3b84c973f4c6f4002 Mon Sep 17 00:00:00 2001
+From: Ivan Gotovchits <ivg@ieee.org>
+Date: Thu, 21 Jul 2016 09:14:24 -0400
+Subject: [PATCH 1/2] added a test for live file links
+
+---
+ test/test.ml | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/test/test.ml b/test/test.ml
+index 40481c2..b3df899 100644
+--- a/test/test.ml
++++ b/test/test.ml
+@@ -889,6 +889,22 @@ let test_fileutil =
+           SafeFS.mark sfs symlink;
+           tmp_dir, symlink, sfs
+       in
++      let mk_filelink test_ctxt =
++        let () =
++          skip_if (Sys.os_type <> "Unix") "Synlink only works on Unix."
++        in
++        let tmp_dir = bracket_tmpdir test_ctxt in
++        let symlink = make_filename [tmp_dir; "recurse"] in
++        let source  = make_filename [tmp_dir; "essai_file"] in
++        let sfs =
++          SafeFS.create tmp_dir
++            []
++            ["essai_file"]
++        in
++        Unix.symlink source symlink;
++        SafeFS.mark sfs symlink;
++        tmp_dir, symlink, sfs
++      in
+       let mk_deadlink test_ctxt =
+         let () =
+           skip_if (Sys.os_type <> "Unix") "Synlink only works on Unix."
+@@ -975,6 +991,13 @@ let test_fileutil =
+                with Unix.Unix_error(Unix.ENOENT, _, _) ->
+                  assert_failure "dead link not copied.");
+ 
++          "Live filelink + cp" >::
++          (fun test_ctxt ->
++             let tmp_dir, symlink, dir1 = mk_filelink test_ctxt in
++             let dest = make_filename [tmp_dir; "dest"] in
++             cp [symlink] dest;
++             assert_bool "regular" (not(test Is_link dest)));
++
+           "Readlink" >::
+           (fun test_ctxt ->
+              let tmp_dir, fn, sfs = mk_symlink test_ctxt in
+
+From 12fc0d1e67a67c6d1b5916521b20a6d0698ed4b1 Mon Sep 17 00:00:00 2001
+From: Ivan Gotovchits <ivg@ieee.org>
+Date: Thu, 21 Jul 2016 09:45:42 -0400
+Subject: [PATCH 2/2] link a link only if it reference directory
+
+---
+ src/FileUtilCP.ml | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/FileUtilCP.ml b/src/FileUtilCP.ml
+index 351727b..60b16e5 100644
+--- a/src/FileUtilCP.ml
++++ b/src/FileUtilCP.ml
+@@ -249,10 +249,12 @@ let cp ?(follow=Skip)
+     end
+ 
+   and cp_one fn_src fn_dst =
+-    let st_src =
++    let st_src, st_src_deref =
+       (* Check existence of source files. *)
+       if test_exists fn_src then
+-        stat fn_src
++        match stat fn_src with
++        | {kind=Symlink} as st -> st, stat ~dereference:true fn_src
++        | st -> st,st
+       else
+         handle_error (`NoSourceFile fn_src)
+     in
+@@ -272,7 +274,10 @@ let cp ?(follow=Skip)
+         match st_src.kind with
+           | Dir -> cp_dir st_src dst_exists fn_src fn_dst
+           | File -> cp_file st_src dst_exists fn_src fn_dst
+-          | Symlink -> cp_symlink fn_src fn_dst
++          | Symlink ->
++            if st_src_deref.kind = Dir
++            then cp_symlink fn_src fn_dst
++            else cp_file st_src_deref dst_exists fn_src fn_dst
+           | Fifo | Dev_char | Dev_block | Socket ->
+               handle_error (`UnhandledType(fn_src, st_src.kind))
+       with CpSkip ->
