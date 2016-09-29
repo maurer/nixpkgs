@@ -6,7 +6,7 @@
  fileutils, frontc, ocamlgraph, ocurl, ocaml_optcomp, re, uri, utop, zarith,
  uuidm, piqi-ocaml, piqi,
  # Other Deps
- llvm_38,
+ llvm_34,
  # Nix Build Deps
  makeWrapper,
  # Nix Lib Deps
@@ -17,16 +17,16 @@ stdenv.mkDerivation rec {
   name = "bap";
   version = "master";
   src = fetchFromGitHub {
-    owner  = "BinaryAnalysisPlatform";
+    owner  = "maurer";
     repo   = "bap";
-    rev    = "fa6819380006161361116030290d682ba480d653";
-    sha256 = "12xv407kcmyl2z4md2vp2vp3vyk0yswnsv0xyh0rhvd8z1z3riss";
+    rev    = "0bb2580b08374b3d1c1ba8b0930684c7dc525d52";
+    sha256 = "0rbndzf1jb45n22y4zrda8w6bf66ba9ah4jhma6i25ckp7j10ikp";
   };
 
   ocaml_version = (builtins.parseDrvName ocaml.name).version;
 
   sigs = fetchurl {
-     url = "https://github.com/BinaryAnalysisPlatform/bap/releases/download/v0.9.9/sigs.zip";
+     url = "https://github.com/BinaryAnalysisPlatform/bap/releases/download/v1.0.0/sigs.zip";
      sha256 = "0mpsq2pinbrynlisnh8j3nrlamlsls7lza0bkqnm9szqjjdmcgfn";
   };
 
@@ -34,13 +34,14 @@ stdenv.mkDerivation rec {
 
   patchPhase = ''
     sed -i configure -e s#-quiet##
+    sed -i oasis/common -e s#-j\ 2#-j\ 0#
   '';
 
   buildInputs = [ ocaml findlib ocaml_oasis ounit which piqi
-                  llvm_38
+                  llvm_34
                   makeWrapper ];
   propagatedBuildInputs =
-   [ bitstring camlzip cmdliner ppx_jane core_kernel ezjsonm faillib
+   [ camlzip cmdliner ppx_jane core_kernel ezjsonm faillib
      fileutils frontc ocamlgraph ocurl ocaml_optcomp re uri utop zarith
      uuidm piqi-ocaml ];
 
@@ -64,7 +65,7 @@ stdenv.mkDerivation rec {
   ln -s $sigs $out/share/bap/sigs.zip
   '';
 
-  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_38}/bin/llvm-config --enable-future --enable-regular --enable-elf --enable-dwarf --enable-frontend --enable-graphlib --enable-llvm --enable-bap-std --enable-tests --enable-byteweight --enable-byteweight-frontend --enable-arm --enable-c --enable-abi --enable-api";
+  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_34}/bin/llvm-config --enable-future --enable-regular --enable-frontend --enable-graphlib --enable-llvm --enable-bap-std --enable-byteweight --enable-byteweight-frontend --enable-arm --enable-c --enable-abi --enable-api";
 
   meta = with stdenv.lib; {
     description = "Platform for binary analysis. It is written in OCaml, but can be used from other languages.";
