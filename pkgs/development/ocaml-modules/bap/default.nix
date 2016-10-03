@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner  = "maurer";
     repo   = "bap";
-    rev    = "0bb2580b08374b3d1c1ba8b0930684c7dc525d52";
-    sha256 = "0rbndzf1jb45n22y4zrda8w6bf66ba9ah4jhma6i25ckp7j10ikp";
+    rev    = "8113dbe9b521666ac203cfebf419222e8f058666";
+    sha256 = "0r9cdhylrnardh522xhp3swf2bj421kypa57mv1s7ryc55vaqfsz";
   };
 
   ocaml_version = (builtins.parseDrvName ocaml.name).version;
@@ -65,7 +65,7 @@ stdenv.mkDerivation rec {
   ln -s $sigs $out/share/bap/sigs.zip
   '';
 
-  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_34}/bin/llvm-config --enable-future --enable-regular --enable-frontend --enable-graphlib --enable-llvm --enable-bap-std --enable-byteweight --enable-byteweight-frontend --enable-arm --enable-c --enable-abi --enable-api";
+  configureFlags = "${if stdenv.isDarwin then "--with-cxxlibs=-lc++ " else ""}--with-llvm-config ${llvm_34}/bin/llvm-config --enable-future --enable-regular --enable-graphlib --enable-llvm --enable-bap-std --enable-byteweight --enable-byteweight-frontend --enable-arm --enable-c --enable-abi --enable-api --enable-x86 --override llvm_static true";
 
   meta = with stdenv.lib; {
     description = "Platform for binary analysis. It is written in OCaml, but can be used from other languages.";
