@@ -5096,6 +5096,8 @@ in
 
     bap = callPackage ../development/ocaml-modules/bap { };
 
+    libbap = callPackage ../development/libraries/libbap { };
+
     base64 = callPackage ../development/ocaml-modules/base64 { };
 
     bolt = callPackage ../development/ocaml-modules/bolt { };
@@ -7990,6 +7992,8 @@ in
   libjson = callPackage ../development/libraries/libjson { };
 
   libb64 = callPackage ../development/libraries/libb64 { };
+
+  libbap = ocamlPackages_4_02.libbap;
 
   judy = callPackage ../development/libraries/judy { };
 
