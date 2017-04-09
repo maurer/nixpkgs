@@ -1,4 +1,4 @@
-{stdenv, buildOcaml, fetchFromGitHub, fetchurl, camlp4, ocaml_oasis, bitstring, camlzip, cmdliner, core_kernel, ezjsonm, faillib, fileutils, ocaml_lwt, ocamlgraph, ocurl, re, uri, zarith, piqi, piqi-ocaml, uuidm, llvm_38, ulex, easy-format, xmlm, frontc, ounit, utop, which, makeWrapper, writeText, ocaml}:
+{stdenv, buildOcaml, fetchFromGitHub, fetchurl, camlp4, ocaml_oasis, bitstring, camlzip, cmdliner, core_kernel, ezjsonm, faillib, fileutils, ocaml_lwt, ocamlgraph, ocurl, re, uri, zarith, piqi, piqi-ocaml, uuidm, llvm_38, ulex, easy-format, xmlm, frontc, ounit, utop, which, makeWrapper, writeText, ppx_jane, ocaml}:
 
 buildOcaml rec {
   name = "bap";
@@ -29,7 +29,7 @@ buildOcaml rec {
                   utop ];
 
   propagatedBuildInputs = [ bitstring camlzip cmdliner core_kernel ezjsonm faillib fileutils ocaml_lwt ocamlgraph ocurl re uri zarith piqi
-                            piqi-ocaml uuidm frontc ounit ];
+                            piqi-ocaml uuidm frontc ounit ppx_jane ];
 
   installPhase = ''
     export OCAMLPATH=$OCAMLPATH:$OCAMLFIND_DESTDIR;
