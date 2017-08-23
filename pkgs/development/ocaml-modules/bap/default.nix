@@ -2,16 +2,16 @@
 
 buildOcaml rec {
   name = "bap";
-  version = "1.2.0";
+  version = "1.3-pre";
   src = fetchFromGitHub {
-    owner = "BinaryAnalysisPlatform";
+    owner = "ivg";
     repo = "bap";
-    rev = "v${version}";
-    sha256 = "0dn1gvj73pma0rsw8r50cmjddibnf42w1kbskb2vpzq0kb79jlkw";
+    rev = "final-1.3-update";
+    sha256 = "1j5gvq1g7mmw3ikqrzfrrh8k17wbiwpkf6da36cc5dmr8jlbrh89";
   };
 
   sigs = fetchurl {
-     url = "https://github.com/BinaryAnalysisPlatform/bap/releases/download/v${version}/sigs.zip";
+     url = "https://github.com/BinaryAnalysisPlatform/bap/releases/download/v1.2.0/sigs.zip";
      sha256 = "0mpsq2pinbrynlisnh8j3nrlamlsls7lza0bkqnm9szqjjdmcgfn";
   };
 
@@ -58,6 +58,5 @@ buildOcaml rec {
     homepage = https://github.com/BinaryAnalysisPlatform/bap/;
     maintainers = [ maintainers.maurer ];
     license = licenses.mit;
-    broken = versionAtLeast ocaml.version "4.03";
   };
 }
