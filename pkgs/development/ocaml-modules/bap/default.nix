@@ -2,12 +2,12 @@
 
 buildOcaml rec {
   name = "bap";
-  version = "1.2.0";
+  version = "1.3.0";
   src = fetchFromGitHub {
     owner = "BinaryAnalysisPlatform";
     repo = "bap";
     rev = "v${version}";
-    sha256 = "0dn1gvj73pma0rsw8r50cmjddibnf42w1kbskb2vpzq0kb79jlkw";
+    sha256 = "0laykcv9rw5b2wz4w9ppr8f6ag0049kyjcxk32366p6qg37v651d";
   };
 
   sigs = fetchurl {
